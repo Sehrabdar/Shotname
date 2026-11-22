@@ -253,6 +253,34 @@ class TestHandledPaths(unittest.TestCase):
             w._tick()
         self.assertIn(path, w.handled)
 
+    def test_preexisting_files_not_emitted_at_startup(self):
+        """Files already in the folder when the watcher is created must NOT be processed."""
+        cb = MagicMock()
+        # Create the file BEFORE creating the watcher
+        path = os.path.join(self.folder, "Screenshot existing.png")
+        _write(path)
+        # Now create the watcher – the pre-existing file should be pre-seeded
+        w = _make_watcher(self.folder, cb)
+        # Tick many times – the pre-existing file must never trigger the callback
+        for _ in range(5):
+            w._tick()
+        cb.assert_not_called()
+
+    def test_new_file_after_startup_is_emitted(self):
+        """A file created AFTER the watcher starts must still be detected normally."""
+        cb = MagicMock()
+        # Create an old file before the watcher
+        old = os.path.join(self.folder, "Screenshot old.png")
+        _write(old)
+        w = _make_watcher(self.folder, cb)
+        # Now create a NEW file after watcher init
+        new = os.path.join(self.folder, "Screenshot new.png")
+        _write(new)
+        # Drive two ticks to stabilise the new file
+        w._tick()
+        w._tick()
+        cb.assert_called_once_with(new)
+
     def test_own_renamed_file_not_re_processed(self):
         """
         Simulate the app renaming a file: the new name should not be

@@ -219,8 +219,8 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--timeout",
         type=float,
-        default=8.0,
-        help="Popup timeout in seconds (default: 8)",
+        default=20.0,
+        help="Popup timeout in seconds (default: 20)",
     )
     return parser
 

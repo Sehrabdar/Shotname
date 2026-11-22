@@ -96,6 +96,15 @@ class ScreenshotWatcher:
 
         self._running: bool = False
 
+        # Pre-populate handled with every screenshot that already exists in the
+        # folder so they are never treated as new files at startup.
+        try:
+            for _name in os.listdir(self.folder):
+                if not _name.startswith(".") and fnmatch.fnmatch(_name, _SCREENSHOT_PATTERN):
+                    self.handled.add(os.path.join(self.folder, _name))
+        except OSError:
+            pass  # Folder may not exist yet; _tick() will handle it gracefully.
+
     # ------------------------------------------------------------------
     # Public control
     # ------------------------------------------------------------------
