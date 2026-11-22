@@ -16,7 +16,9 @@ Six weeks later, searching for a specific receipt or error modal by timestamp is
 
 > **Target Platform:** Ubuntu only (Wayland and X11).
 
-<!-- TODO: Add 30-second demo GIF here -->
+
+https://github.com/user-attachments/assets/cc0dcede-55db-42ab-a2a4-6424ba93cfe2
+
 
 ## Key Decisions
 
